@@ -3,6 +3,10 @@ import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
 import { jsPDF } from 'jspdf';
 import { saveAs } from 'file-saver';
+import { inject } from '@vercel/analytics';
+
+// Initialize Vercel Web Analytics
+inject();
 
 // Storage Keys
 const STORAGE_KEYS = {
