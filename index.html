@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codegnan QR generator</title>
+    <meta name="description" content="Codegnan QR generator - Create and customize high-resolution QR standees and stickers">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body class="app-body">
+
+    <!-- Top Navigation / Controls Wrapper -->
+    <header class="top-nav-bar no-print">
+        <!-- Left Controls: Format Dropdown, Logo Mode Switcher & QR Generator Below -->
+        <div class="top-left-controls">
+            <div class="top-left-row">
+                <!-- Modern Format Dropdown Selector -->
+                <div class="custom-dropdown-container" id="format-dropdown-container">
+                    <button id="format-dropdown-trigger" type="button" class="dropdown-trigger-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select Size Format" title="Select Standee / Sticker Size">
+                        <span id="selected-format-label" class="dropdown-selected-text">6×4 Standee</span>
+                        <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+
+                    <div id="format-dropdown-menu" class="dropdown-menu-card hidden" role="listbox" aria-label="Format Options">
+                        <button type="button" class="dropdown-item active" data-format="6x4" role="option" aria-selected="true">
+                            <div class="item-text-group">
+                                <span class="item-title">6×4 Standee</span>
+                                <span class="item-sub">True 2:3 Print &bull; 2400×3600 px</span>
+                            </div>
+                            <span class="item-check">✓</span>
+                        </button>
+
+                        <button type="button" class="dropdown-item" data-format="900x1600" role="option" aria-selected="false">
+                            <div class="item-text-group">
+                                <span class="item-title">900×1600 Standee</span>
+                                <span class="item-sub">Modern 9:16 Vertical &bull; 900×1600 px</span>
+                            </div>
+                            <span class="item-check">✓</span>
+                        </button>
+
+                        <button type="button" class="dropdown-item" data-format="square" role="option" aria-selected="false">
+                            <div class="item-text-group">
+                                <span class="item-title">1:1 Square Sticker</span>
+                                <span class="item-sub">Square Sticker &bull; 1080×1080 px</span>
+                            </div>
+                            <span class="item-check">✓</span>
+                        </button>
+
+                        <button type="button" class="dropdown-item" data-format="a4" role="option" aria-selected="false">
+                            <div class="item-text-group">
+                                <span class="item-title">A4 Flyer</span>
+                                <span class="item-sub">Handout 3:4 &bull; 1200×1600 px</span>
+                            </div>
+                            <span class="item-check">✓</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Logo Selector Pill: Upload Logo vs Fixed Logo -->
+                <div class="format-pill-wrapper" role="radiogroup" aria-label="Logo Selector">
+                    <button id="btn-upload-logo-mode" type="button" class="format-btn active" title="Upload custom logo">
+                        Upload Logo
+                    </button>
+                    <button id="btn-fixed-logo-mode" type="button" class="format-btn" title="Use official fixed Codegnan logo">
+                        Fixed Logo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sleek Integrated QR Link Input Pill (Placed Below Standee Dropdown) -->
+            <div class="qr-quick-pill">
+                <svg class="qr-link-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    <circle cx="6.5" cy="6.5" r="1" fill="currentColor"></circle>
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor"></circle>
+                    <circle cx="17.5" cy="17.5" r="1" fill="currentColor"></circle>
+                    <circle cx="6.5" cy="17.5" r="1" fill="currentColor"></circle>
+                </svg>
+                <input type="text" id="qr-link-input" class="qr-compact-input" placeholder="Paste link to generate QR..." spellcheck="false" autocomplete="off">
+                <button id="btn-generate-qr" type="button" class="qr-compact-btn" title="Generate QR from link">
+                    Generate QR
+                </button>
+            </div>
+        </div>
+
+        <!-- Center Controls: Helpful Tip Pill on the exact same line as Standee and Download -->
+        <div class="top-center-controls">
+            <aside class="tip-pill-container" aria-label="Usage Tip">
+                <div class="tip-pill">
+                    <span class="tip-icon">💡</span>
+                    <span class="tip-text"><strong>Tip:</strong> Click on any text, logo, or QR code to edit directly.</span>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Right Controls: Reset Button & Download Dropdown -->
+        <div class="top-right-controls">
+            <!-- Reset Button Pill -->
+            <button id="btn-reset-all" type="button" class="reset-action-btn" title="Reset all texts, logo, and QR to default">
+                <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                </svg>
+                <span>Reset</span>
+            </button>
+
+            <!-- Download Dropdown Component (PNG, PDF, JPEG, Print) -->
+            <div class="custom-dropdown-container" id="download-dropdown-container">
+                <button id="download-dropdown-trigger" type="button" class="download-action-btn" aria-haspopup="listbox" aria-expanded="false" title="Choose download format">
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span id="download-label">Download</span>
+                    <svg class="dropdown-chevron-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+
+                <div id="download-dropdown-menu" class="dropdown-menu-card download-menu-card hidden" role="listbox" aria-label="Download Options">
+                    <button type="button" class="dropdown-item download-option-item" data-export-type="png" role="option">
+                        <div class="item-text-group">
+                            <span class="item-title">PNG Image</span>
+                            <span class="item-sub">Lossless High-Resolution (.png)</span>
+                        </div>
+                        <span class="format-badge-pill">PNG</span>
+                    </button>
+
+                    <button type="button" class="dropdown-item download-option-item" data-export-type="pdf" role="option">
+                        <div class="item-text-group">
+                            <span class="item-title">PDF Document</span>
+                            <span class="item-sub">Print-Ready Vector PDF (.pdf)</span>
+                        </div>
+                        <span class="format-badge-pill">PDF</span>
+                    </button>
+
+                    <button type="button" class="dropdown-item download-option-item" data-export-type="jpeg" role="option">
+                        <div class="item-text-group">
+                            <span class="item-title">JPEG Image</span>
+                            <span class="item-sub">Optimized for sharing (.jpg)</span>
+                        </div>
+                        <span class="format-badge-pill">JPG</span>
+                    </button>
+
+                    <button type="button" class="dropdown-item download-option-item" data-export-type="print" role="option">
+                        <div class="item-text-group">
+                            <span class="item-title">Print Directly</span>
+                            <span class="item-sub">Send straight to printer</span>
+                        </div>
+                        <span class="format-badge-pill">🖨️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="logo-upload" class="sr-only" accept="image/*">
+    <input type="file" id="qr-upload" class="sr-only" accept="image/*">
+
+    <!-- Main Card Container -->
+    <main class="flyer-stage">
+        <div id="flyer-card" class="flyer-frame flyer-card format-6x4">
+            <!-- Top decorative color bar -->
+            <div class="top-gradient-bar"></div>
+
+            <!-- Inner Flyer Content Container -->
+            <div class="flyer-content">
+                <!-- Header: Logo Upload Area -->
+                <div id="logo-box-container" class="logo-box-container" role="button" tabindex="0" title="Click to upload Logo">
+                    <div id="logo-placeholder" class="image-placeholder logo-placeholder">
+                        <span>Click to upload Logo</span>
+                    </div>
+                    <img id="logo-img" src="" alt="Uploaded Logo" class="uploaded-image logo-img hidden">
+                </div>
+
+                <!-- Stylish Tagline Badge -->
+                <div class="tagline-wrapper hide-on-square">
+                    <div class="career-tagline-badge">
+                        <span class="sparkle-icon" aria-hidden="true">✨</span>
+                        <span id="career-tagline" contenteditable="true" spellcheck="false" class="career-tagline-text">
+                            Your Career Starts Here
+                        </span>
+                        <span class="sparkle-icon" aria-hidden="true">✨</span>
+                    </div>
+                </div>
+
+                <!-- Focus Area: QR Code Container -->
+                <div id="qr-wrapper" class="qr-wrapper">
+                    <!-- Instructions (Editable) -->
+                    <div class="scan-instruction-box hide-on-square">
+                        <span id="scan-text" contenteditable="true" spellcheck="false" class="scan-title">
+                            SCAN TO REGISTER
+                        </span>
+                    </div>
+
+                    <!-- QR Code Box -->
+                    <div id="qr-box-container" class="qr-box-container" role="button" tabindex="0" title="Click to upload or generate QR">
+                        <div id="qr-box" class="qr-box-inner">
+                            <div id="qr-placeholder" class="image-placeholder qr-placeholder">
+                                <span>Click to upload QR</span>
+                            </div>
+                            <img id="qr-img" src="" alt="Uploaded QR" class="uploaded-image qr-img hidden">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer: Title (Enquiry Form on top, Main Campus | Vijayawada below, Small Website URL) -->
+                <div class="footer-title-container">
+                    <h1 id="title-text" class="title-heading-box">
+                        <!-- Top Line: Enquiry Form -->
+                        <div class="enquiry-form-line">
+                            <span id="title-enquiry" contenteditable="true" spellcheck="false" class="brand-blue-text">Enquiry</span>
+                            <span id="title-form" contenteditable="true" spellcheck="false" class="brand-red-text">Form</span>
+                        </div>
+
+                        <!-- Below: Main Campus | Vijayawada on the same line -->
+                        <div id="campus-location" contenteditable="true" spellcheck="false" class="campus-location-line">
+                            Main Campus &nbsp;|&nbsp; Vijayawada
+                        </div>
+
+                        <!-- Very Small Website URL -->
+                        <div id="website-url" contenteditable="true" spellcheck="false" class="website-url-line">
+                            www.codegnan.com
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast message for feedback -->
+    <div id="toast" class="toast" role="alert" aria-live="assertive">
+        <span id="toast-icon">✓</span>
+        <span id="toast-message">Success</span>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "codegnan-qr-generator",
+  "version": "1.0.0",
+  "description": "A high-resolution QR Standee & Flyer Generator with live editing, URL-to-QR generator, and lossless PNG/PDF/JPG export.",
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "qr-code",
+    "qr-generator",
+    "standee-generator",
+    "flyer-generator",
+    "codegnan",
+    "pdf-export",
+    "open-source"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "file-saver": "^2.0.5",
+    "html-to-image": "^1.11.11",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "vite": "^5.4.14"
+  }
+}

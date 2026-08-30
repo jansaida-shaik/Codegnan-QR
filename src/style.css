@@ -1,0 +1,1215 @@
+/* ==========================================================================
+   Codegnan QR Generator - Comprehensive Multi-Device Responsive Design
+   ========================================================================== */
+
+:root {
+  /* Official Codegnan Brand Palette */
+  --brand-blue: #2e3192;
+  --brand-blue-dark: #1f2275;
+  --brand-blue-soft: rgba(46, 49, 146, 0.08);
+  --brand-red: #ed1c24;
+  --brand-red-bright: #eb2f37;
+  --brand-red-soft: rgba(237, 28, 36, 0.08);
+
+  /* Gradients */
+  --grad-codegnan: linear-gradient(90deg, #2e3192 0%, #ed1c24 100%);
+  --grad-codegnan-btn: linear-gradient(135deg, #1f2275 0%, #2e3192 55%, #ed1c24 100%);
+
+  /* Neutrals */
+  --color-white: #ffffff;
+  --color-text-main: #111827;
+  --color-text-muted: #475569;
+  --color-placeholder-bg: rgba(248, 250, 252, 0.95);
+  --color-border-subtle: rgba(46, 49, 146, 0.12);
+
+  /* Shadows */
+  --shadow-card: 0 25px 60px -15px rgba(46, 49, 146, 0.15), 0 10px 30px -10px rgba(237, 28, 36, 0.08);
+
+  /* Dynamic viewport & top offset */
+  --top-nav-height: 4.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--color-text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body.app-body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #f1f5f9;
+  padding: max(4.6rem, calc(env(safe-area-inset-top, 0px) + 4rem)) max(1rem, env(safe-area-inset-right, 0px)) max(1.25rem, env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+  overflow-y: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Top Navigation Bar (Same Horizontal Baseline for Standee & Download Pills)
+   ========================================================================== */
+
+.top-nav-bar {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top, 0px));
+  left: 0;
+  width: 100%;
+  padding: 0 max(1.25rem, env(safe-area-inset-right, 0px)) 0 max(1.25rem, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  z-index: 50;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Left Controls: Format & Logo Pills on row 1, QR Generator on row 2 */
+.top-left-controls {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.top-left-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+/* Center Controls: Tip Pill centered with the form */
+.top-center-controls {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: max(0.75rem, env(safe-area-inset-top, 0px));
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+  width: auto;
+  max-width: 60vw;
+}
+
+.top-center-controls .tip-pill-container {
+  margin: 0;
+  width: auto;
+  pointer-events: none;
+}
+
+.top-center-controls .tip-pill {
+  pointer-events: auto;
+}
+
+/* Right Controls: Reset & Download Dropdown */
+.top-right-controls {
+  pointer-events: auto;
+  position: relative;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+/* Reset Button */
+.reset-action-btn {
+  pointer-events: auto;
+  position: relative;
+  z-index: 61;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  padding: 0.55rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.835rem;
+  font-weight: 600;
+  color: #475569;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.reset-action-btn:hover {
+  background: #ffffff;
+  color: var(--brand-red);
+  border-color: rgba(237, 28, 36, 0.25);
+  box-shadow: 0 6px 20px rgba(237, 28, 36, 0.12);
+  transform: translateY(-1px);
+}
+
+.reset-action-btn:active {
+  transform: translateY(0);
+}
+
+.reset-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  transition: transform 0.35s ease;
+}
+
+.reset-action-btn:hover .reset-icon {
+  transform: rotate(-90deg);
+}
+
+/* ==========================================================================
+   Codegnan Gradient Pill Styles
+   ========================================================================== */
+
+/* 1. Modern Format Custom Dropdown Trigger Pill */
+.custom-dropdown-container {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+}
+
+.dropdown-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--grad-codegnan-btn);
+  color: var(--color-white);
+  padding: 0.52rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(46, 49, 146, 0.35);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.dropdown-trigger-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(46, 49, 146, 0.45);
+}
+
+.dropdown-trigger-btn.open {
+  box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.35), 0 8px 24px rgba(46, 49, 146, 0.45);
+}
+
+.dropdown-selected-text {
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.dropdown-chevron {
+  width: 0.85rem;
+  height: 0.85rem;
+  color: var(--color-white);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.dropdown-trigger-btn.open .dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu Card */
+.dropdown-menu-card {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 255px;
+  max-width: min(320px, 92vw);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(18px);
+  border-radius: 1.25rem;
+  padding: 0.4rem;
+  box-shadow: 0 16px 40px -8px rgba(46, 49, 146, 0.25), 0 0 0 1px rgba(46, 49, 146, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  z-index: 100;
+  animation: dropdownPop 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top left;
+}
+
+@keyframes dropdownPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.94) translateY(-8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0.85rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.dropdown-item:hover {
+  background: rgba(46, 49, 146, 0.06);
+}
+
+.dropdown-item.active {
+  background: linear-gradient(135deg, rgba(46, 49, 146, 0.12) 0%, rgba(237, 28, 36, 0.08) 100%);
+  border: 1px solid rgba(46, 49, 146, 0.18);
+}
+
+.item-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.item-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dropdown-item.active .item-title {
+  color: var(--brand-blue);
+}
+
+.item-sub {
+  font-size: 0.725rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.item-check {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--brand-blue);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.dropdown-item.active .item-check {
+  opacity: 1;
+}
+
+/* 2. Logo Selector Pill Wrapper */
+.format-pill-wrapper {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  padding: 0.25rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 15px rgba(46, 49, 146, 0.08);
+  border: 1px solid rgba(46, 49, 146, 0.15);
+}
+
+.format-btn {
+  padding: 0.48rem 1.05rem;
+  border-radius: 9999px;
+  font-size: 0.835rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  background: transparent;
+  color: #475569;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.format-btn.active {
+  background: var(--grad-codegnan-btn);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(46, 49, 146, 0.35);
+}
+
+/* 3. Integrated QR Quick Link Pill */
+.qr-quick-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  padding: 0.25rem 0.35rem 0.25rem 0.85rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 15px rgba(46, 49, 146, 0.08);
+  border: 1px solid rgba(46, 49, 146, 0.18);
+  max-width: 100%;
+}
+
+.qr-link-svg-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--brand-blue);
+  flex-shrink: 0;
+}
+
+.qr-compact-input {
+  width: 220px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.qr-compact-input::placeholder {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.qr-compact-btn {
+  background: var(--grad-codegnan-btn);
+  color: var(--color-white);
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 3px 10px rgba(46, 49, 146, 0.3);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.qr-compact-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(46, 49, 146, 0.4);
+}
+
+/* 4. Download Action Dropdown Pill Button */
+.download-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--grad-codegnan-btn);
+  color: var(--color-white);
+  padding: 0.52rem 1.35rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 4px 15px rgba(46, 49, 146, 0.35);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.download-action-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(46, 49, 146, 0.45);
+}
+
+.download-action-btn.open {
+  box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.35), 0 8px 24px rgba(46, 49, 146, 0.45);
+}
+
+.download-action-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.download-icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex-shrink: 0;
+}
+
+.dropdown-chevron-white {
+  width: 0.85rem;
+  height: 0.85rem;
+  color: var(--color-white);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.download-action-btn.open .dropdown-chevron-white {
+  transform: rotate(180deg);
+}
+
+.download-menu-card {
+  left: auto;
+  right: 0;
+  min-width: 250px;
+  max-width: min(320px, 92vw);
+  transform-origin: top right;
+}
+
+.format-badge-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(46, 49, 146, 0.08);
+  color: var(--brand-blue);
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  letter-spacing: 0.03em;
+  border: 1px solid rgba(46, 49, 146, 0.12);
+}
+
+.download-option-item:hover .format-badge-pill {
+  background: var(--grad-codegnan-btn);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+/* ==========================================================================
+   Flyer Stage & Dedicated Outer Frame
+   ========================================================================== */
+
+.flyer-stage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+}
+
+.flyer-frame {
+  position: relative;
+  border: 1px solid #9ca3af;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ffffff;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  user-select: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-card);
+}
+
+/* Top Codegnan Gradient Bar - cleanly clipped by .flyer-frame */
+.top-gradient-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--grad-codegnan);
+  flex-shrink: 0;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Inner Content Container */
+.flyer-content {
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+/* 1. Format: 6×4 Physical Print Standee (2:3 Aspect Ratio) */
+.format-6x4 {
+  max-width: min(420px, 94vw);
+  aspect-ratio: 2 / 3;
+}
+
+.format-6x4 .flyer-content {
+  padding: clamp(1.2rem, 3.5vw, 1.85rem) clamp(1.2rem, 3.5vw, 2rem) clamp(1.2rem, 3.5vw, 2rem) clamp(1.2rem, 3.5vw, 2rem);
+}
+
+.format-6x4 .logo-box-container {
+  width: 100%;
+  max-width: min(270px, 75%);
+  height: clamp(3.2rem, 8vw, 4.25rem);
+  margin-top: 0.2rem;
+}
+
+.format-6x4 .qr-wrapper {
+  margin: 0.25rem 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.format-6x4 .qr-box-inner {
+  width: clamp(9.5rem, 38vw, 13.5rem);
+  height: clamp(9.5rem, 38vw, 13.5rem);
+}
+
+.format-6x4 .title-heading-box {
+  font-size: clamp(1.35rem, 4.2vw, 1.75rem);
+}
+
+.format-6x4 .campus-location-line {
+  font-size: clamp(0.78rem, 2.5vw, 0.95rem);
+  margin-top: 0.25rem;
+}
+
+/* 2. Format: 900×1600 Modern Standee (9:16 Aspect Ratio) */
+.format-900x1600 {
+  max-width: min(410px, 92vw);
+  aspect-ratio: 9 / 16;
+}
+
+.format-900x1600 .flyer-content {
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.2rem, 3.5vw, 2rem) clamp(1.5rem, 4vw, 2.25rem) clamp(1.2rem, 3.5vw, 2rem);
+}
+
+.format-900x1600 .logo-box-container {
+  width: 100%;
+  max-width: min(270px, 75%);
+  height: clamp(3.2rem, 8vw, 4.25rem);
+  margin-top: 0.2rem;
+}
+
+.format-900x1600 .qr-wrapper {
+  margin: 0.25rem 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.format-900x1600 .qr-box-inner {
+  width: clamp(9.5rem, 38vw, 13.5rem);
+  height: clamp(9.5rem, 38vw, 13.5rem);
+}
+
+.format-900x1600 .title-heading-box {
+  font-size: clamp(1.35rem, 4.2vw, 1.75rem);
+}
+
+.format-900x1600 .campus-location-line {
+  font-size: clamp(0.78rem, 2.5vw, 0.95rem);
+  margin-top: 0.25rem;
+}
+
+/* 3. Format: Square Sticker (1:1 / 1080×1080 Target) */
+.format-square {
+  max-width: min(440px, 94vw);
+  aspect-ratio: 1 / 1;
+}
+
+.format-square .flyer-content {
+  padding: clamp(1rem, 3vw, 1.6rem) clamp(1rem, 3vw, 1.8rem) clamp(1rem, 3vw, 1.8rem) clamp(1rem, 3vw, 1.8rem);
+}
+
+.format-square .logo-box-container {
+  width: 100%;
+  max-width: min(220px, 65%);
+  height: clamp(2.8rem, 7vw, 3.6rem);
+  margin-top: 0.15rem;
+}
+
+.format-square .qr-wrapper {
+  margin: 0.25rem 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.format-square .qr-box-inner {
+  width: clamp(8rem, 32vw, 10.5rem);
+  height: clamp(8rem, 32vw, 10.5rem);
+}
+
+.format-square .hide-on-square {
+  display: none !important;
+}
+
+.format-square .title-heading-box {
+  font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+}
+
+.format-square .campus-location-line {
+  font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+  margin-top: 0.15rem;
+}
+
+/* 4. Format: A4 Flyer (1200×1600 Target) */
+.format-a4 {
+  max-width: min(440px, 94vw);
+  aspect-ratio: 3 / 4;
+}
+
+.format-a4 .flyer-content {
+  padding: clamp(1.2rem, 3.5vw, 1.85rem) clamp(1.2rem, 3.5vw, 2rem) clamp(1.2rem, 3.5vw, 2rem) clamp(1.2rem, 3.5vw, 2rem);
+}
+
+.format-a4 .logo-box-container {
+  width: 100%;
+  max-width: min(270px, 75%);
+  height: clamp(3.2rem, 8vw, 4.25rem);
+  margin-top: 0.2rem;
+}
+
+.format-a4 .qr-wrapper {
+  margin: 0.25rem 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.format-a4 .qr-box-inner {
+  width: clamp(9.5rem, 38vw, 13.5rem);
+  height: clamp(9.5rem, 38vw, 13.5rem);
+}
+
+.format-a4 .title-heading-box {
+  font-size: clamp(1.35rem, 4.2vw, 1.75rem);
+}
+
+.format-a4 .campus-location-line {
+  font-size: clamp(0.78rem, 2.5vw, 0.95rem);
+  margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   Career Tagline Badge
+   ========================================================================== */
+
+.tagline-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.2rem, 3.5vw, 2rem);
+  margin-bottom: 0.35rem;
+}
+
+.career-tagline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem clamp(0.75rem, 2vw, 1.15rem);
+  background: linear-gradient(135deg, rgba(46, 49, 146, 0.08) 0%, rgba(237, 28, 36, 0.08) 100%);
+  border: 1px solid rgba(46, 49, 146, 0.22);
+  border-radius: 9999px;
+  box-shadow: 0 3px 12px rgba(46, 49, 146, 0.08);
+  transition: all 0.2s ease;
+}
+
+.career-tagline-badge:hover {
+  border-color: rgba(46, 49, 146, 0.4);
+  box-shadow: 0 4px 16px rgba(46, 49, 146, 0.15);
+}
+
+.sparkle-icon {
+  font-size: 0.78rem;
+  user-select: none;
+}
+
+.career-tagline-text {
+  font-size: clamp(0.68rem, 2vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--brand-blue);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Logo & QR Area
+   ========================================================================== */
+
+.logo-box-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  touch-action: manipulation;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(46, 49, 146, 0.04) 0%, rgba(241, 245, 249, 0.9) 100%);
+  border: 1.5px dashed rgba(46, 49, 146, 0.25);
+  border-radius: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-blue);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+}
+
+.logo-box-container:hover .logo-placeholder {
+  background: linear-gradient(135deg, rgba(46, 49, 146, 0.08) 0%, rgba(237, 28, 36, 0.06) 100%);
+  border-color: var(--brand-blue);
+  transform: scale(1.02);
+}
+
+.uploaded-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0.35rem;
+  transition: transform 0.2s ease;
+}
+
+.logo-box-container:hover .uploaded-image {
+  transform: scale(1.03);
+}
+
+/* QR Code Area */
+.scan-instruction-box {
+  margin-bottom: clamp(0.35rem, 1.2vw, 0.65rem);
+  text-align: center;
+  width: 100%;
+}
+
+.scan-title {
+  font-size: clamp(0.72rem, 2vw, 0.82rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #475569;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.qr-box-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  touch-action: manipulation;
+}
+
+.qr-box-inner {
+  position: relative;
+  padding: 0.85rem;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  border: 1.25px solid rgba(15, 23, 42, 0.22);
+  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qr-box-container:hover .qr-box-inner {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.12);
+}
+
+.qr-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  background: #f1f5f9;
+  border: none;
+  color: #64748b;
+  font-size: clamp(0.8rem, 2.2vw, 0.925rem);
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.qr-box-container:hover .qr-placeholder {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.qr-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 0.85rem;
+  display: block;
+}
+
+/* ==========================================================================
+   Footer Title Text (Enquiry in Blue, Form in Red, Campus in Slate)
+   ========================================================================== */
+
+.footer-title-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.title-heading-box {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  line-height: 1.2;
+}
+
+.enquiry-form-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-weight: 900;
+}
+
+/* Solid Codegnan Typography Colors */
+.brand-blue-text {
+  color: #2e3192;
+  display: inline-block;
+}
+
+.brand-red-text {
+  color: #ed1c24;
+  display: inline-block;
+}
+
+.campus-location-line {
+  font-size: clamp(0.78rem, 2.5vw, 0.95rem);
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+.website-url-line {
+  font-size: clamp(0.68rem, 2vw, 0.78rem);
+  font-weight: 700;
+  color: var(--brand-blue);
+  letter-spacing: 0.04em;
+  margin-top: 0.25rem;
+  opacity: 1;
+  transition: color 0.2s ease;
+}
+
+.website-url-line:hover {
+  color: var(--brand-red);
+}
+
+/* ==========================================================================
+   Contenteditable Focus & Clean Capture
+   ========================================================================== */
+
+[contenteditable="true"] {
+  outline: none;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.15s ease;
+  display: inline-block;
+}
+
+[contenteditable="true"]:hover {
+  background-color: rgba(46, 49, 146, 0.04);
+  box-shadow: 0 0 0 4px rgba(46, 49, 146, 0.04);
+}
+
+[contenteditable="true"]:focus {
+  background-color: rgba(46, 49, 146, 0.08);
+  box-shadow: 0 0 0 4px rgba(46, 49, 146, 0.08);
+}
+
+/* Clean Capture snapshot mode matching live website replica */
+.capturing {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.capturing [contenteditable="true"] {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.capturing .top-gradient-bar {
+  box-shadow: none !important;
+}
+
+/* Helpful Tip Pill Component (Positioned on top of the form) */
+.tip-pill-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+  margin-bottom: 0.85rem;
+  pointer-events: none;
+}
+
+.tip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  padding: 0.38rem 1.05rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(46, 49, 146, 0.14);
+  box-shadow: 0 4px 16px rgba(46, 49, 146, 0.06);
+  font-size: 0.785rem;
+  color: #475569;
+  pointer-events: auto;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.tip-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(46, 49, 146, 0.1);
+  border-color: rgba(46, 49, 146, 0.25);
+}
+
+.tip-icon {
+  font-size: 0.9rem;
+}
+
+.tip-text strong {
+  color: var(--brand-blue);
+  font-weight: 700;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  color: var(--color-white);
+  padding: 0.65rem 1.35rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Multi-Device Responsive Breakpoints
+   ========================================================================== */
+
+/* Tablets & Small Laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  body.app-body {
+    padding-top: max(8rem, calc(env(safe-area-inset-top, 0px) + 7rem));
+  }
+
+  .top-nav-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0 1rem;
+  }
+
+  .top-left-controls,
+  .top-right-controls {
+    justify-content: center;
+  }
+
+  .qr-compact-input {
+    width: 180px;
+  }
+}
+
+/* Mobile Devices (max-width: 768px) */
+@media (max-width: 768px) {
+  body.app-body {
+    padding-top: max(8.75rem, calc(env(safe-area-inset-top, 0px) + 7.5rem));
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .top-nav-bar {
+    top: max(0.5rem, env(safe-area-inset-top, 0px));
+    padding: 0 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .top-left-controls,
+  .top-right-controls {
+    width: 100%;
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  .dropdown-trigger-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .format-btn {
+    padding: 0.42rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .qr-quick-pill {
+    flex: 1 1 auto;
+    max-width: 280px;
+    padding: 0.2rem 0.25rem 0.2rem 0.65rem;
+  }
+
+  .qr-compact-input {
+    width: 100%;
+    min-width: 100px;
+    font-size: 0.78rem;
+  }
+
+  .qr-compact-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.78rem;
+  }
+
+  .download-action-btn {
+    padding: 0.48rem 1.1rem;
+    font-size: 0.8rem;
+  }
+
+  .dropdown-menu-card {
+    min-width: 230px;
+  }
+
+  .download-menu-card {
+    right: 0;
+    left: auto;
+  }
+}
+
+/* Small / Compact Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  body.app-body {
+    padding-top: max(9.5rem, calc(env(safe-area-inset-top, 0px) + 8.25rem));
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .top-left-controls,
+  .top-right-controls {
+    gap: 0.35rem;
+  }
+
+  .dropdown-trigger-btn {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  .format-btn {
+    padding: 0.38rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .qr-quick-pill {
+    max-width: calc(100% - 120px);
+  }
+
+  .qr-compact-btn {
+    padding: 0.38rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .download-action-btn {
+    padding: 0.42rem 0.95rem;
+    font-size: 0.78rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body.app-body {
+    background: transparent !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  .flyer-stage {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .flyer-card {
+    box-shadow: none !important;
+  }
+}
