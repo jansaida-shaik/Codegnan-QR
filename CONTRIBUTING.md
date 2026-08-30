@@ -7,6 +7,7 @@ Thank you for your interest in contributing to the **Codegnan QR Generator**! Th
 ## 🛠️ Development Workflow
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/your-username/codegnan-qr-generator.git
    cd codegnan-qr-generator
@@ -14,6 +15,7 @@ Thank you for your interest in contributing to the **Codegnan QR Generator**! Th
    ```
 
 2. **Run Locally**
+
    ```bash
    npm run dev
    ```
@@ -25,6 +27,7 @@ Thank you for your interest in contributing to the **Codegnan QR Generator**! Th
 
 4. **Verify the Build**
    Ensure the production build succeeds without errors:
+
    ```bash
    npm run build
    ```
@@ -42,6 +45,7 @@ Thank you for your interest in contributing to the **Codegnan QR Generator**! Th
 ## 🐛 Reporting Issues
 
 If you find a bug or have a feature request:
+
 1. Check existing issues to see if it has already been reported.
 2. Open a new issue with detailed reproduction steps, browser/OS version, and screenshots if applicable.
 
