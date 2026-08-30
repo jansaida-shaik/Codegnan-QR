@@ -4,9 +4,11 @@ import QRCode from 'qrcode';
 import { jsPDF } from 'jspdf';
 import { saveAs } from 'file-saver';
 import { inject } from '@vercel/analytics';
+import { injectSpeedInsights } from '@vercel/speed-insights';
 
-// Initialize Vercel Web Analytics
+// Initialize Vercel Web Analytics & Speed Insights
 inject();
+injectSpeedInsights();
 
 // Storage Keys
 const STORAGE_KEYS = {
